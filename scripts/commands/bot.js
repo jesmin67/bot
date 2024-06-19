@@ -20,7 +20,7 @@ module.exports.run = async function({ api, event, args, Users }) {
     if (!query) return api.sendMessage(`${name},\n\n ${rand}\n\n`, event.threadID, event.messageID);
 
     try {
-        const res = await axios.get(`http://fi3.bot-hosting.net:20536/sim?type=ask&ask=${query}`);
+        const res = await axios.get(`http://fi3.bot-hosting.net:20536/sim?type=${query}`);
         
         if (res.data.success) {
             return api.sendMessage({
