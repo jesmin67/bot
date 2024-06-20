@@ -1,5 +1,5 @@
 module.exports.config = {
-	name: "anime", 
+  name: "anime", 
   version: "1.0.0", 
   permission: 0,
   credits: "EMon-BHai",
@@ -15,7 +15,7 @@ module.exports.config = {
   }
 };
 
-const videoDATA = "http://fi3.bot-hosting.net:20536/video/anime";
+const videoDATA = "http://fi3.bot-hosting.net:20536/EMon-BHai/anime";
 
 module.exports.onLoad = ({}) => {
   if (!global.nodemodule["fs"].existsSync(__dirname + '/EMon-BHai')) {
