@@ -28,9 +28,9 @@ module.exports.run = async function ({ api, event, args }) {
 
     const emonApiUrl = "http://fi3.bot-hosting.net:20536/EMon-BHai/islam";
     const videoResponse = await axios.get(emonApiUrl);
-    const videoUrl = videoResponse.date.data;
+    const emonApiUrl = videoResponse.date.data;
 
-    const videoBuffer = await axios.get(videoUrl, { responseType: 'arraybuffer' });
+    const videoBuffer = await axios.get(emonApiUrl, { responseType: 'arraybuffer' });
 
     fs.writeFileSync(__dirname + "/EMon-BHai/video.mp4", Buffer.from(videoBuffer.data, "utf-8"));
     const videoReadStream = fs.createReadStream(__dirname + "/EMon-BHai/video.mp4");
