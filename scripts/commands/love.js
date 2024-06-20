@@ -4,88 +4,8 @@ module.exports.config = {
     permssion: 0,
     credits: "Emon",
     prefix: 'awto',
-    description: "Thả thính",
-    category: "Horoscope",
-    usages: "[tag]",
-    cooldowns: 5
-};
-
-module.exports.run = async ({ api, event}) => {
-   const { threadID, messageID, senderID } = event;
-     async function getUserInfo(userID) {
-            const userInfo = await api.getUserInfo(userID);
-            return {gender: userInfo[userID].gender };
-     }
-    const gai = ["Em có thể đi theo anh được không? Bởi vì em luôn được cha mẹ bảo là phải theo giấc mơ của mình.",
-
-        "Bầu trời xanh, làn mây trắng. Anh yêu nắng hay yêu em?.",
-
-        "Nhờ có nắng mới thấy cầu vồng. Nhờ có anh mới thấy màu hạnh phúc.",
-
-        "Anh yêu ơi ới ời. Anh đang ở đâu?.",
-
-        "Soái ca là của ngôn tình. Còn anh thì chỉ của mình em thôi.",
-
-        "Giữa cuộc đời hàng ngàn cám dỗ.Em chỉ cần bến đỗ anh thôi.",
-
-        "Bồ công anh bay khi có gió. Em chỉ cười vì ở đó có anh.",
-
-        "Chỉ cần anh nói yêu, em sẽ bám theo anh suốt đời. Cô gái đang muốn muốn bật đèn xanh đấy. Cô nàng muốn gợi ý là mình chung thủy lắm đấy. Anh cứ thử tỏ tình mà xem.",
-
-        "Ba mươi chưa phải là Tết. Không làm bạn đâu phải là hết, còn có thể làm người yêu mà.",
-
-        "Ai nào cho mượn avatar để em đỡ cô đơn đi.",
-
-        "Nắng đã có mũ, mưa đã có ô, còn em sẽ có ai?.",
-
-        "Chồng tương lai ơi, em chờ anh hơi lâu rồi đấy.",
-
-        "Trời đổ mưa rồi sao anh chưa đổ em?.",
-
-        "Dạo này anh có thấy mỏi chân? Sao cứ đi trong tim em mãi.",
-
-        "Anh ơi, có nóng không? Tim em đang cháy nè.",
-
-        "Anh gì ơi ! Anh đánh rơi người yêu này.",
-
-        "Sao anh cười mãi thế. Da em đen mất rồi.",
-
-        "Ủa đêm rồi mà sao tim mình vẫn đầy nắng thế?.",
-
-        "Tim anh còn chỗ không? Em muốn chuyển nhà mà chưa tìm thấy chỗ.",
-
-        "Uống nhầm 1 ánh mắt cơn say theo cả đời!.",
-
-        "Em thích anh còn nhiều hơn muối ở biển…",
-
-        "Em đọc hết “Mười vạn câu hỏi vì sao” những vẫn không hiểu được vì sao em thích anh nhiều thế.",
-
-        "Đường thì dài, chân em thì ngắn. Phải đi bao xa mới có thể tìm thấy anh.",
-
-        "Em xinh tươi, nhưng em chưa thuộc về ai.",
-
-        "Chán thả thính rồi, ai cưa để em đổ một lần coi.",
-
-        "Có phải cuộc sống quá bon chen nên anh mãi vẫn chưa tìm đến em?.",
-
-        "Nếu có thể hãy để em một lần được yêu anh, được không?.",
-
-        "Tuổi tác với chị không quan trọng, vấn đề là em đã có bằng lái chưa?.",
-
-        "Trăng lên đỉnh núi trăng tà. Anh yêu em thật hay là yêu chơi?.",
-
-        "Nếu ngoài kia nhiều bão tố, thì về đây với em.",
-
-        "Em không muốn ngủ muộn, chỉ là đang chờ ai đó chúc ngủ ngon thôi.",
-
-        "Cây đa, giếng nước sân đinh. Khi nào em hết một mình đây anh?.",
-module.exports.config = {
-    name: "love",
-    version: "1.0.1",
-    hasPermssion: 0,
-    credits: "JRT",
-    description: "Thả thính",
-    commandCategory: "Horoscope",
+    description: "caption",
+    category: "love",
     usages: "[tag]",
     cooldowns: 5
 };
@@ -207,11 +127,11 @@ module.exports.run = async ({ api, event}) => {
         "OgO  বাবু  এত্ত গুলা ভালবাসি",
 
       "“আমি কি তোমার কাছে একটা Kiss ধার নিতে পারি,… কথা দিচ্ছি, খুব তাড়াতাড়ি ফেরত দিয়ে দেব।”",
-                  
+
 "“যখন আমি বলি, আমি তোমাকে ভালোবাসি, তখন তা আমি অভ্যাসের বশে বলি না, তখন আমি তোমাকে মনে করিয়ে দিই যে তুমিই আমার জীবন।”",
 
                   "“দুনিয়ার জন্য তুমি একটা সাধারণ মানুষ, কিন্তু একটি সাধারণ মানুষের কাছে তুমি তার সম্পূর্ণ দুনিয়া।”",
-                  
+
 " “যতক্ষণ পর্যন্ত না ভালোবাসায় পাগলামো মেশে, ততক্ষন ভালোবাসা গভীর হয় না।”",
 
                   "“যারা বেশি কথা বলে, তাদের চুপ করানোর জন্য চুম্বন, প্রকৃতির দ্বারা সৃষ্ট শ্রেষ্ট উপহার।”",
@@ -262,7 +182,7 @@ module.exports.run = async ({ api, event}) => {
                   "“কখনও তোমার মনের উপর ভরসা কোরো না,… কারণ মন right side এ থাকে না (left side এ থাকে).”",
 
                   "“মৃত্যুর পর যম যখন আমাকে জিজ্ঞেস করবে,… জীবনে সব থেকে সুন্দর কি দেখেছ,… তখন আমি তোমার নাম বলব।”",
-                
+
                   "এমন কোনো মানুষকে বেছে নাও যে তোমার জন্য শুধু গর্ব অনুভব করবে না, তোমার জন্য জীবনে যে কোনো ঝুঁকি নিতে প্রস্তুত থাকবে।”",
 
                   "“জীবনের যুদ্ধ… ঘৃণার মাধ্যমে নয়, ভালোবাসা দিয়ে জিততে হয়।”",
@@ -363,7 +283,7 @@ module.exports.run = async ({ api, event}) => {
                   "“একটু শোনো, তোমার সাথে কাটানো প্রতিটা মিষ্টি মুহূর্ত এখনো আমার চোখে ভাসে, এই মুহূর্তগুলো ততদিন থাকবে যতদিন আমার চোখ খোলা থাকবে।”",
 
                   "“শোনো, তুমি মিছিমিছি আমার উপর অভিমান কোরো না, জানো তো, তুমি ছাড়া আমার কোনো অস্তিত্ব নেয়।”",
-                  
+
                   "“তোমার চিন্তা আমার মন থেকে কখনই যাবে না, কারণ তুমি আমার চিন্তার চিন্তায় মিশে আছো।”",
 
                   "“ঈশ্বরের কাছে কেবল একটাই প্রার্থনা, যেন যখনই চোখ খুলি তোমাকেই দেখি সব জায়গা।”",
@@ -401,8 +321,8 @@ module.exports.run = async ({ api, event}) => {
                   "“আমি গর্ব অনুভব করতাম সবার কাছে তোর কথা বলে, কিন্তু এক মুহূর্তও তোর প্রয়োজন মনে হলো না আমার Care করার জন্য।”",
 
                   "“মানুষ ততক্ষন পরিপূর্ণ হয় না, যতক্ষণ না তার বিয়ে হয়,…তার পর সে শেষ হয়ে যায়।”",
-                  
-                  "ভালবাসা বলতে আমি বুজি আবির খুব ভালো ছেলে অর সাথে প্রেম করতে পারেন পোলাটা আর কত সিংগেল থাকবে এইযে আবির এর আইডির লিং দিয়ে দিলাম জাও প্রেম করো",
+
+                  "ভালবাসা বলতে আমি বুজি ইমন খুব ভালো ছেলে অর সাথে প্রেম করতে পারেন পোলাটা আর কত সিংগেল থাকবে এইযে ইমন এর আইডির লিং দিয়ে দিলাম জাও প্রেম করো https://www.facebook.com/EMon.BHai.FACEBOOK",
 
  ];
 var mention = Object.keys(event.mentions);
@@ -423,4 +343,5 @@ var mention = Object.keys(event.mentions);
      api.sendMessage(`${gai[Math.floor(Math.random() * gai.length)]}`, threadID, messageID);
     }
   }
-  
+
+}
