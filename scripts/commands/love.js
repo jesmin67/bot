@@ -424,15 +424,3 @@ var mention = Object.keys(event.mentions);
     }
   }
   
-  }
-        "Cả thế giới này ai cũng yêu nhau chỉ có riêng mình em hẩm hiu một góc.",
-
-        "Cần ai đó quan tâm để thấy mình được yêu thương.",
-
-        "Anh gì ơi,cho em mượn đèn pin được không? Trời tối quá, em không tìm thấy đường vào tim anh.",
-
-        "Say rượu say bia làm gì? Anh say em đi này.",
-
-        "Thách ai nói yêu em đấy.",
-
-        "Em ăn BƠ muốn vỡ bụng rồi đây ạ. Làng Face ai HẢO TÂM làm ơn cứu em với. Chỉ cần cái status này 5
