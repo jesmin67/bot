@@ -19,10 +19,10 @@ module.exports.run = async function ({ api, event, args }) {
   if (!prompt) return api.sendMessage("[ ! ] Input Your address", event.threadID, event.messageID);
 
 
- const EMon-BHai = `http://api.aladhan.com/v1/timingsByAddress?address=${encodeURIComponent(prompt)}`;
+ const EMon = `http://api.aladhan.com/v1/timingsByAddress?address=${encodeURIComponent(prompt)}`;
 
   try {
-    const response = await axios.get(EMon-BHai);
+    const response = await axios.get(EMon);
     const timings = response.data.data.timings;
 
 
