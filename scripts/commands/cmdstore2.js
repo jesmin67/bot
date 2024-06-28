@@ -5,7 +5,7 @@ const cmdUrlsJson = "https://raw.githubusercontent.com/sharifvau/Emon-Server/mai
 const itemsPerPage = 10;
 
 module.exports.config = {
-  name: "cmdstore2",
+  name: "cmdstore",
   credits: "Dipto",
   permission: 0,
   version: "2.0",
@@ -35,15 +35,13 @@ module.exports.run = async function ({ api, event, args }) {
     const endIndex = startIndex + itemsPerPage;
     const cmdsToShow = cmds.slice(startIndex, endIndex);
 
-    let msg = `
-╭───✦ Cmd Store ✦───╮
-\n│ Page ${page} of ${totalPages}\n│ Total ${cmds.length} commands\n`;
+    let msg = `╭─────⭓${page}⭓──────⭓\n`;
 
     cmdsToShow.forEach((cmd, index) => {
-      msg += `│ ───✦ ${startIndex + index + 1}. ${cmd.cmd}\n│ AUTHOR: ${cmd.author}\n│ UPDATE: ${cmd.update || "N/A"}\n`;
+      msg += `│ 『 ${startIndex + index + 1}. ${cmd.cmd} \n│ AUTHOR: ${cmd.author} \n│ UPDATE: ${cmd.update || "N/A"}』\n`;
     });
 
-    msg += `╰─────────────⧕`;
+    msg += `╰─────⭓${page}⭓──────⭓`;
 
     if (page < totalPages) {
       msg += `\nType "${this.config.name} ${page + 1}" for more commands.`;
