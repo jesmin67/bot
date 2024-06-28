@@ -1,4 +1,9 @@
 const axios = require("axios");
+const availableCmdsUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/availableCmds.json";
+const cmdUrlsJson = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/cmdUrls.json";
+const pictureUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/Emon.jpg";
+
+const itemsPerPage = 10;
 
 module.exports.config = {
   name: "cmdstore",
@@ -13,25 +18,10 @@ module.exports.config = {
 };
 
 module.exports.run = async function ({ api, event, args }) {
-  const availableCmdsUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/availableCmds.json";
-  const cmdUrlsJson = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/cmdUrls.json";
-  const pictureUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/Emon.jpg";
-
-  const itemsPerPage = 10;
-
   const page = parseInt(args[0]) || 1;
   try {
     const response = await axios.get(availableCmdsUrl);
     const cmds = response.data.cmdName;
-
-    if (!cmds || !Array.isArray(cmds)) {
-      return api.sendMessage(
-        "❌ | Failed to retrieve commands. Invalid response format.",
-        event.threadID,
-        event.messageID
-      );
-    }
-
     const totalPages = Math.ceil(cmds.length / itemsPerPage);
 
     if (page < 1 || page > totalPages) {
@@ -49,13 +39,13 @@ module.exports.run = async function ({ api, event, args }) {
     let msg = `╭─────⭓${page}⭓──────⭓\n`;
 
     cmdsToShow.forEach((cmd, index) => {
-      msg += `│ 『 ${startIndex + index + 1}. ${cmd.cmd} \n│ AUTHOR: ${cmd.author} \n│ UPDATE: ${cmd.update || "N/A"}』\n│────────────⭓\n`;
+      msg += `│ 『 ${startIndex + index + 1}. ${cmd.cmd} \n│ Credits: ${cmd.emon} \n│ AddCmd: ${cmd.emon2 || "N/A"}』\n│────────────⭓\n`;
     });
 
     msg += `╰─────⭓${page}⭓──────⭓`;
 
     if (page < totalPages) {
-      msg += `\nType "${this.config.name} ${page + 1}" for more commands.`;
+      msg += `\n🌸───※ ·❆· ※───🌸\nআরও কমান্ডের জন্য \n"${this.config.name} ${page + 1}" রিপ্লাই করুন.\n🌸───※ ·❆· ※───🌸`;
     }
 
     const attachment = await axios({
@@ -68,9 +58,7 @@ module.exports.run = async function ({ api, event, args }) {
       body: msg,
       attachment: attachment
     }, event.threadID, (error, info) => {
-      if (error) {
-        return api.sendMessage("❌ | Failed to send the message.", event.threadID, event.messageID);
-      }
+      if (error) return api.sendMessage("❌ | Failed to send the message.", event.threadID, event.messageID);
 
       global.client.handleReply.push({
         name: this.config.name,
@@ -82,9 +70,8 @@ module.exports.run = async function ({ api, event, args }) {
       });
     }, event.messageID);
   } catch (error) {
-    console.error("Error fetching commands:", error);
     api.sendMessage(
-      "❌ | Failed to retrieve commands. Please check the URLs or your network connection.",
+      "❌ |  কমান্ড পুনরুদ্ধার করতে ব্যর্থ হয়েছে. অনুগ্রহ করে URL বা আপনার নেটওয়ার্ক সংযোগ পরীক্ষা করুন৷.",
       event.threadID,
       event.messageID
     );
@@ -92,10 +79,8 @@ module.exports.run = async function ({ api, event, args }) {
 };
 
 module.exports.handleReply = async function ({ api, event, handleReply }) {
-  const itemsPerPage = 10;
-  
   if (handleReply.author != event.senderID) {
-    return api.sendMessage("❌ You do not have permission to use this command.", event.threadID, event.messageID);
+    return api.sendMessage("❌ আপনার এই কমান্ড ব্যবহার করার অনুমতি নেই ❌", event.threadID, event.messageID);
   }
 
   const reply = parseInt(event.body);
@@ -117,7 +102,7 @@ module.exports.handleReply = async function ({ api, event, handleReply }) {
 
     if (!selectedCmdUrl) {
       return api.sendMessage(
-        "❌ | Command URL not found.",
+        "❌ | কমান্ড URL পাওয়া যায়নি.",
         event.threadID,
         event.messageID
       );
@@ -137,9 +122,8 @@ module.exports.handleReply = async function ({ api, event, handleReply }) {
       attachment: attachment
     }, event.threadID, event.messageID);
   } catch (error) {
-    console.error("Error fetching command URL:", error);
     api.sendMessage(
-      "❌ | Failed to retrieve the command URL. Please check the URL or your network connection.",
+      "❌ | কমান্ড পুনরুদ্ধার করতে ব্যর্থ হয়েছে. অনুগ্রহ করে URL বা আপনার নেটওয়ার্ক সংযোগ পরীক্ষা করুন৷.",
       event.threadID,
       event.messageID
     );
