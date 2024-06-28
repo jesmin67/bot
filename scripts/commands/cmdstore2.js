@@ -38,7 +38,7 @@ module.exports.run = async function ({ api, event, args }) {
     let msg = `╭─────⭓${page}⭓──────⭓\n`;
 
     cmdsToShow.forEach((cmd, index) => {
-      msg += `│ 『 ${startIndex + index + 1}. ${cmd.cmd} \n│ AUTHOR: ${cmd.author} \n│ UPDATE: ${cmd.update || "N/A"}』\n`;
+      msg += `│ 『 ${startIndex + index + 1}. ${cmd.cmd} \n│ AUTHOR: ${cmd.author} \n│ UPDATE: ${cmd.update || "N/A"}』\n│────────────⭓\n`;
     });
 
     msg += `╰─────⭓${page}⭓──────⭓`;
