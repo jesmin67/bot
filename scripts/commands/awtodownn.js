@@ -80,7 +80,7 @@ module.exports.getLink = function (url) {
 
 module.exports.checkLink = function (url) {
     const regex = /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm;
-    const found = (url).match(regex);
+    const found = url.match(regex);
     var media = ['tiktok', 'facebook', 'douyin', 'youtube', 'youtu', 'twitter', 'instagram', 'kuaishou', 'fb']
     if (this.isVaildUrl(String(found))) {
         if (media.some(item => String(found).includes(item))) {
