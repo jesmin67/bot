@@ -62,13 +62,13 @@ module.exports.run = async function ({ api, event, args }) {
 
       global.client.handleReply.push({
         name: this.config.name,
-        type: "reply",
+        type: "select",
         messageID: info.messageID,
         author: event.senderID,
-        cmdName: cmds,
+        cmds: cmds,
         page: page
       });
-    });
+    }, event.messageID);
   } catch (error) {
     api.sendMessage(
       "❌ | Failed to retrieve commands. Please check the URLs or your network connection.",
@@ -89,15 +89,14 @@ module.exports.handleReply = async function ({ api, event, handleReply }) {
 
   if (isNaN(reply) || reply < startIndex + 1 || reply > endIndex) {
     return api.sendMessage(
-      `❌ | Please reply with a number between ${startIndex + 1} and ${Math.min(endIndex, handleReply.cmdName.length)}.`,
+      `❌ | Please reply with a number between ${startIndex + 1} and ${Math.min(endIndex, handleReply.cmds.length)}.`,
       event.threadID,
       event.messageID
     );
   }
 
   try {
-    const cmdName = handleReply.cmdName[reply - 1].cmd;
-    const { status } = handleReply.cmdName[reply - 1];
+    const cmdName = handleReply.cmds[reply - 1].cmd;
     const response = await axios.get(cmdUrlsJson);
     const selectedCmdUrl = response.data[cmdName];
 
