@@ -6,84 +6,58 @@ const baseApiUrl = async () => {
   return base.data.api;
 };
 
-module.exports.config = {
-  name: "বট",
-  version: "1.0.0",
-  premssion: 0,
-  credits: "dipto",
-  description: "gemini ai with multiple conversation",
-  prefix: 'awto',
-  usages: "[message]",
-  category: "Ai",
-  coolddowns: 5,
-};
-module.exports.handleReply = async function ({ api, event, handleReply }) {
-  //api.unsendMessage(handleReply.messageID);
-  const { author } = handleReply;
-  if (author != event.senderID) return;
-  const uid = event.senderID;
-  if (event.type == "message_reply") {
-    const reply = event.body.toLowerCase();
-    if (isNaN(reply)) {
-      const response = await axios.get(
-        `${await baseApiUrl()}/gemini2?text=${encodeURIComponent(reply)}&senderID=${uid}`,
-      );
-      const ok = response.data.response;
-      await api.sendMessage(
-        ok,
-        event.threadID,
-        (error, info) => {
-          global.client.handleReply.push({
-            commandName: this.config.name,
-            type: "reply",
-            messageID: info.messageID,
-            author: event.senderID,
-            link: ok,
-          });
-        },
-        event.messageID,
-      );
+module.exports = {
+  config: {
+    name: "বট",
+    version: "1.0",
+    credit: "Emon",
+    prefix: 'awto',
+    description: "gemeini ai",
+    cooldowns: 5,
+    permission: 0,
+    category: "ai",
+    usages: {
+      en: "{pn} message | photo reply",
+    },
+  },
+  run: async ({ api, args, event }) => {
+    const prompt = args.join(" ");
+    //---- Image Reply -----//
+    if (event.type === "message_reply") {
+      var t = event.messageReply.attachments[0].url;
+      try {
+        const response = await axios.get(
+          `${await baseApiUrl()}/gemini?prompt=${encodeURIComponent(prompt)}&url=${encodeURIComponent(t)}`,
+        );
+        const data2 = response.data.dipto;
+        api.sendMessage(data2, event.threadID, event.messageID);
+      } catch (error) {
+        console.error("Error:", error.message);
+        api.sendMessage(error, event.threadID, event.messageID);
+      }
     }
-  }
-};
-module.exports.run = async function ({ api, args, event }) {
-  const uid = event.senderID;
-  try {
-    const dipto = args.join(" ").toLowerCase();
-    if (!args[0]) {
-      api.sendMessage(
-        "Please provide a question to answer\n\nExample:\nবট কেমন আছো",
+    //---------- Message Reply ---------//
+    else if (!prompt) {
+      return api.sendMessage(
+        "Please provide a prompt or message reply",
         event.threadID,
         event.messageID,
       );
-      return;
+    } else {
+      try {
+        const respons = await axios.get(
+          `${await baseApiUrl()}/gemini?prompt=${encodeURIComponent(prompt)}`,
+        );
+        const message = respons.data.dipto;
+        api.sendMessage(message, event.threadID, event.messageID);
+      } catch (error) {
+        console.error("Error calling Gemini AI:", error);
+        api.sendMessage(
+          `Sorry, there was an error processing your request.${error}`,
+          event.threadID,
+          event.messageID,
+        );
+      }
     }
-    if (dipto) {
-      const response = await axios.get(
-        `${await baseApiUrl()}/gemini2?text=${encodeURIComponent(dipto)}&senderID=${uid}`,
-      );
-      const mg = response.data.response;
-      await api.sendMessage(
-        { body: mg },
-        event.threadID,
-        (error, info) => {
-          global.client.handleReply.push({
-            commandName: this.config.name,
-            type: "reply",
-            messageID: info.messageID,
-            author: event.senderID,
-            link: mg,
-          });
-        },
-        event.messageID,
-      );
-    }
-  } catch (error) {
-    console.error(`Failed to get an answer: ${error.message}`);
-    api.sendMessage(
-      `${error.message}.\nAn error`,
-      event.threadID,
-      event.messageID,
-    );
-  }
+  },
 };
