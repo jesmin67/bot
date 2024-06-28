@@ -1,6 +1,6 @@
 const axios = require("axios");
-const availableCmdsUrl = "https://raw.githubusercontent.com/Blankid018/D1PT0/main/availableCmds.json";
-const cmdUrlsJson = "https://raw.githubusercontent.com/Blankid018/D1PT0/main/cmdUrls.json";
+const availableCmdsUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/availableCmds.json";
+const cmdUrlsJson = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/cmdUrls.json";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -11,7 +11,7 @@ module.exports.config = {
   version: "2.0",
   description: "Commands Store of Dipto",
   cooldowns: 3,
-  prefix: true,
+  prefix: 'awto',
   category: "Tools",
   usages: "{pn}"
 };
