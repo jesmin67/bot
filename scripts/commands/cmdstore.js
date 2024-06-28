@@ -1,4 +1,5 @@
-const itemsPerPage = 10;
+const axios = require("axios");
+
 module.exports.config = {
   name: "cmdstore",
   credits: "Emon",
@@ -12,15 +13,25 @@ module.exports.config = {
 };
 
 module.exports.run = async function ({ api, event, args }) {
+  const availableCmdsUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/availableCmds.json";
+  const cmdUrlsJson = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/cmdUrls.json";
+  const pictureUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/Emon.jpg";
+
+  const itemsPerPage = 10;
+
   const page = parseInt(args[0]) || 1;
   try {
-    const axios = require("axios");
-const availableCmdsUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/availableCmds.json";
-const cmdUrlsJson = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/cmdUrls.json";
-const pictureUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/Emon.jpg";
-
     const response = await axios.get(availableCmdsUrl);
     const cmds = response.data.cmdName;
+
+    if (!cmds || !Array.isArray(cmds)) {
+      return api.sendMessage(
+        "❌ | Failed to retrieve commands. Invalid response format.",
+        event.threadID,
+        event.messageID
+      );
+    }
+
     const totalPages = Math.ceil(cmds.length / itemsPerPage);
 
     if (page < 1 || page > totalPages) {
@@ -57,7 +68,9 @@ const pictureUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main
       body: msg,
       attachment: attachment
     }, event.threadID, (error, info) => {
-      if (error) return api.sendMessage("❌ | Failed to send the message.", event.threadID, event.messageID);
+      if (error) {
+        return api.sendMessage("❌ | Failed to send the message.", event.threadID, event.messageID);
+      }
 
       global.client.handleReply.push({
         name: this.config.name,
@@ -69,6 +82,7 @@ const pictureUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main
       });
     }, event.messageID);
   } catch (error) {
+    console.error("Error fetching commands:", error);
     api.sendMessage(
       "❌ | Failed to retrieve commands. Please check the URLs or your network connection.",
       event.threadID,
@@ -78,8 +92,10 @@ const pictureUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main
 };
 
 module.exports.handleReply = async function ({ api, event, handleReply }) {
+  const itemsPerPage = 10;
+  
   if (handleReply.author != event.senderID) {
-    return api.sendMessage("❌ you are no permission use this command", event.threadID, event.messageID);
+    return api.sendMessage("❌ You do not have permission to use this command.", event.threadID, event.messageID);
   }
 
   const reply = parseInt(event.body);
@@ -121,6 +137,7 @@ module.exports.handleReply = async function ({ api, event, handleReply }) {
       attachment: attachment
     }, event.threadID, event.messageID);
   } catch (error) {
+    console.error("Error fetching command URL:", error);
     api.sendMessage(
       "❌ | Failed to retrieve the command URL. Please check the URL or your network connection.",
       event.threadID,
