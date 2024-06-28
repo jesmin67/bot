@@ -1,3 +1,4 @@
+const itemsPerPage = 10;
 module.exports.config = {
   name: "cmdstore",
   credits: "Emon",
@@ -18,7 +19,6 @@ const availableCmdsUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Serve
 const cmdUrlsJson = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/cmdUrls.json";
 const pictureUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/Emon.jpg";
 
-const itemsPerPage = 10;
     const response = await axios.get(availableCmdsUrl);
     const cmds = response.data.cmdName;
     const totalPages = Math.ceil(cmds.length / itemsPerPage);
