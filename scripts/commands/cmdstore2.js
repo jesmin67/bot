@@ -1,6 +1,7 @@
 const axios = require("axios");
 const availableCmdsUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/availableCmds.json";
 const cmdUrlsJson = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/cmdUrls.json";
+const pictureUrl = "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/Emon.jpg";
 
 const itemsPerPage = 10;
 
@@ -47,23 +48,27 @@ module.exports.run = async function ({ api, event, args }) {
       msg += `\nType "${this.config.name} ${page + 1}" for more commands.`;
     }
 
-    api.sendMessage(
-      msg,
-      event.threadID,
-      (error, info) => {
-        if (error) return api.sendMessage("❌ | Failed to send the message.", event.threadID, event.messageID);
+    const attachment = await axios({
+      url: pictureUrl,
+      method: "GET",
+      responseType: "stream"
+    }).then(response => response.data);
 
-        global.client.handleReply.push({
-          name: this.config.name,
-          type: "reply",
-          messageID: info.messageID,
-          author: event.senderID,
-          cmdName: cmds,
-          page: page
-        });
-      },
-      event.messageID
-    );
+    api.sendMessage({
+      body: msg,
+      attachment: attachment
+    }, event.threadID, (error, info) => {
+      if (error) return api.sendMessage("❌ | Failed to send the message.", event.threadID, event.messageID);
+
+      global.client.handleReply.push({
+        name: this.config.name,
+        type: "reply",
+        messageID: info.messageID,
+        author: event.senderID,
+        cmdName: cmds,
+        page: page
+      });
+    }, event.messageID);
   } catch (error) {
     api.sendMessage(
       "❌ | Failed to retrieve commands. Please check the URLs or your network connection.",
@@ -75,7 +80,7 @@ module.exports.run = async function ({ api, event, args }) {
 
 module.exports.handleReply = async function ({ api, event, handleReply }) {
   if (handleReply.author != event.senderID) {
-    return api.sendMessage("you are no permission use this command", event.threadID, event.messageID);
+    return api.sendMessage("Who are you? 🐸", event.threadID, event.messageID);
   }
 
   const reply = parseInt(event.body);
@@ -106,7 +111,17 @@ module.exports.handleReply = async function ({ api, event, handleReply }) {
 
     api.unsendMessage(handleReply.messageID);
     const msg = `╭───⭓EMON⭓───⭓\n│ EMon-BHai-Bot : Command \n│▰▰▰▰▰▰▰▰▰▰▰▰\n│ ╰┈➤ ❝ [ Command Url ]= ${selectedCmdUrl}\n╰──EMon-BHai-Bot──⭓`;
-    api.sendMessage(msg, event.threadID, event.messageID);
+
+    const attachment = await axios({
+      url: pictureUrl,
+      method: "GET",
+      responseType: "stream"
+    }).then(response => response.data);
+
+    api.sendMessage({
+      body: msg,
+      attachment: attachment
+    }, event.threadID, event.messageID);
   } catch (error) {
     api.sendMessage(
       "❌ | Failed to retrieve the command URL. Please check the URL or your network connection.",
