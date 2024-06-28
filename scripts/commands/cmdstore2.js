@@ -7,10 +7,10 @@ const itemsPerPage = 10;
 
 module.exports.config = {
   name: "cmdstore",
-  credits: "Dipto",
+  credits: "Emon",
   permission: 0,
   version: "2.0",
-  description: "Commands Store of Dipto",
+  description: "Commands Store of EMon-BHai-Bot",
   cooldowns: 3,
   prefix: 'awto',
   category: "Tools",
@@ -80,7 +80,7 @@ module.exports.run = async function ({ api, event, args }) {
 
 module.exports.handleReply = async function ({ api, event, handleReply }) {
   if (handleReply.author != event.senderID) {
-    return api.sendMessage("Who are you? 🐸", event.threadID, event.messageID);
+    return api.sendMessage("❌ you are no permission use this command", event.threadID, event.messageID);
   }
 
   const reply = parseInt(event.body);
