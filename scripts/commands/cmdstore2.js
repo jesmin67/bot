@@ -68,7 +68,7 @@ module.exports.run = async function ({ api, event, args }) {
         cmdName: cmds,
         page: page
       });
-    }, event.messageID);
+    });
   } catch (error) {
     api.sendMessage(
       "❌ | Failed to retrieve commands. Please check the URLs or your network connection.",
