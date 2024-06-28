@@ -89,7 +89,7 @@ module.exports.handleReply = async function ({ api, event, handleReply }) {
 
   if (isNaN(reply) || reply < startIndex + 1 || reply > endIndex) {
     return api.sendMessage(
-      `❌ | Please reply with a number between ${startIndex + 1} and ${Math.min(endIndex, handleReply.cmds.length)}.`,
+      `❌ | অনুগ্রহ করে  ${startIndex + 1} এবং ${Math.min(endIndex, handleReply.cmds.length)}এর মধ্যে একটি নম্বর দিয়ে উত্তর দিন.`,
       event.threadID,
       event.messageID
     );
