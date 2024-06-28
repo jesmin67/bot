@@ -75,7 +75,7 @@ module.exports.run = async function ({ api, event, args }) {
 
 module.exports.handleReply = async function ({ api, event, handleReply }) {
   if (handleReply.author != event.senderID) {
-    return api.sendMessage("Who are you? 🐸", event.threadID, event.messageID);
+    return api.sendMessage("you are no permission use this command", event.threadID, event.messageID);
   }
 
   const reply = parseInt(event.body);
@@ -105,7 +105,7 @@ module.exports.handleReply = async function ({ api, event, handleReply }) {
     }
 
     api.unsendMessage(handleReply.messageID);
-    const msg = `╭───────⭓\n│ STATUS: ${status || "N/A"}\n│ Command Url: ${selectedCmdUrl}\n╰─────────────⭓`;
+    const msg = `╭───⭓EMON⭓───⭓\n│ EMon-BHai-Bot : Command \n│▰▰▰▰▰▰▰▰▰▰▰▰\n│ ╰┈➤ ❝ [ Command Url ]= ${selectedCmdUrl}\n╰──EMon-BHai-Bot──⭓`;
     api.sendMessage(msg, event.threadID, event.messageID);
   } catch (error) {
     api.sendMessage(
