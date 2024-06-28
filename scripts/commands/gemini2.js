@@ -7,7 +7,7 @@ const baseApiUrl = async () => {
 };
 
 module.exports.config = {
-  name: "gemini",
+  name: "gemini2",
   version: "1.0.0",
   premssion: 0,
   credits: "dipto",
