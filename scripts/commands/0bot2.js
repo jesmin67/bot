@@ -24,9 +24,9 @@ module.exports.run = async function({ api, event, args, Users }) {
         
         const res = await axios.get(`https://gemini-api-production-5fa9.up.railway.app/gemini?q=${encodeURIComponent(query)}`);
         
-        if (res.data && res.data.message) {
+        if (res.data && res.data.generated_text) {
             return api.sendMessage({
-                body: res.data.message
+                body: res.data.generated_text
             }, event.threadID, event.messageID);
         } else {
             return api.sendMessage('Failed to get a response', event.threadID, event.messageID);
