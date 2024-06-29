@@ -1,89 +1,43 @@
-const axios = require("axios");
-const baseApiUrl = async () => {
-  const base = await axios.get(
-    `https://raw.githubusercontent.com/sharifvau/Emon-Server/main/emonapi.json`,
-  );
-  return base.data.gemini;
+module.exports.config = {
+    name: "emonai",
+    version: "1.1.0",
+    permssion: 0,
+    credits: "kenlie",
+    description: "ask anything",
+    prefix: false,
+    category: "ai",
+    usages: "[ask]",
+    cooldowns: 5,
 };
 
-module.exports.config = {
-  name: "emonai",
-  version: "1.0.0",
-  premssion: 0,
-  credits: "dipto",
-  description: "gemini ai with multiple conversation",
-  prefix: 'awto',
-  usages: "[message]",
-  category: "Ai",
-  coolddowns: 5,
-};
-module.exports.handleReply = async function ({ api, event, handleReply }) {
-  //api.unsendMessage(handleReply.messageID);
-  const { author } = handleReply;
-  if (author != event.senderID) return;
-  const uid = event.senderID;
-  if (event.type == "message_reply") {
-    const reply = event.body.toLowerCase();
-    if (isNaN(reply)) {
-      const response = await axios.get(
-        `${await baseApiUrl()}/gemini?q=${encodeURIComponent(reply)}&senderID=${uid}`,
-      );
-      const ok = response.data.response;
-      await api.sendMessage(
-        ok,
-        event.threadID,
-        (error, info) => {
-          global.client.handleReply.push({
-            commandName: this.config.name,
-            type: "reply",
-            messageID: info.messageID,
-            author: event.senderID,
-            link: ok,
-          });
-        },
-        event.messageID,
-      );
+module.exports.run = async function({ api, event, args }) {
+    const axios = require("axios");
+    let { messageID, threadID, senderID, body } = event;
+    let tid = threadID,
+    mid = messageID;
+    const content = encodeURIComponent(args.join(" "));
+    if (!args[0]) return api.sendMessage("Please provide a question...", tid, mid);
+     try {
+            api.setMessageReaction("🔍", event.messageID, (err) => {}, true);
+            api.sendMessage("🕟 | processing....", threadID, messageID);
+        const res = await axios.get(`https://gemini-api-l3g4.onrender.com/gemini?q=${content}`);
+        const respond = res.data.response;
+        if (res.data.error) {
+            api.sendMessage(`Error: ${res.data.error}`, tid, (error, info) => {
+                if (error) {
+                    console.error(error);
+                }
+            }, mid);
+        } else {
+          api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+            api.sendMessage('🖇「 answer 」: \n' + respond, tid, (error, info) => {
+                if (error) {
+                    console.error(error);
+                }
+            }, mid);
+        }
+    } catch (error) {
+        console.error(error);
+        api.sendMessage("An error occurred while fetching the data.", tid, mid);
     }
-  }
-};
-module.exports.run = async function ({ api, args, event }) {
-  const uid = event.senderID;
-  try {
-    const dipto = args.join(" ").toLowerCase();
-    if (!args[0]) {
-      api.sendMessage(
-        "Please provide a question to answer\n\nExample:\ngemini hey",
-        event.threadID,
-        event.messageID,
-      );
-      return;
-    }
-    if (dipto) {
-      const response = await axios.get(
-        `${await baseApiUrl()}/gemini?q=${encodeURIComponent(dipto)}&senderID=${uid}`,
-      );
-      const mg = response.data.response;
-      await api.sendMessage(
-        { body: mg },
-        event.threadID,
-        (error, info) => {
-          global.client.handleReply.push({
-            commandName: this.config.name,
-            type: "reply",
-            messageID: info.messageID,
-            author: event.senderID,
-            link: mg,
-          });
-        },
-        event.messageID,
-      );
-    }
-  } catch (error) {
-    console.error(`Failed to get an answer: ${error.message}`);
-    api.sendMessage(
-      `${error.message}.\nAn error`,
-      event.threadID,
-      event.messageID,
-    );
-  }
 };
