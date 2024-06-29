@@ -1,11 +1,9 @@
-const axios = require("axios");
 const emonapi = async () => {
   const base = await axios.get(
-    `https://raw.githubusercontent.com/sharifvau/Emon-Server/main/emonapi.json`,
+    `https://raw.githubusercontent.com/sharifvau/Emon-Server/main/emonapi.json`
   );
   return base.data.api;
 };
-
 module.exports = {
   config: {
     name: "emonai",
@@ -27,7 +25,7 @@ module.exports = {
       var t = event.messageReply.attachments[0].url;
       try {
         const response = await axios.get(
-          `${await emonapi()}/gemini?q=${encodeURIComponent(q)}&url=${encodeURIComponent(t)}`,
+          `${await emonapi()}/gemini?q=${encodeURIComponent(q)}&url=${encodeURIComponent(t)}`
         );
         const data2 = response.data.Emon;
         api.sendMessage(data2, event.threadID, event.messageID);
@@ -41,21 +39,21 @@ module.exports = {
       return api.sendMessage(
         "Please provide a q or message reply",
         event.threadID,
-        event.messageID,
+        event.messageID
       );
     } else {
       try {
-        const respons = await axios.get(
-          `${await emonapi()}/gemini?q=${encodeURIComponent(q)}`,
+        const response = await axios.get(
+          `${await emonapi()}/gemini?q=${encodeURIComponent(q)}`
         );
-        const message = respons.data.Emon;
+        const message = response.data.Emon;
         api.sendMessage(message, event.threadID, event.messageID);
       } catch (error) {
         console.error("Error calling Gemini AI:", error);
         api.sendMessage(
           `Sorry, there was an error processing your request.${error}`,
           event.threadID,
-          event.messageID,
+          event.messageID
         );
       }
     }
