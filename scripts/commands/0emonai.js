@@ -3,7 +3,7 @@ const baseApiUrl = async () => {
   const base = await axios.get(
     `https://raw.githubusercontent.com/sharifvau/Emon-Server/main/emonapi.json`,
   );
-  return base.data.api;
+  return base.data.gemini;
 };
 
 module.exports.config = {
