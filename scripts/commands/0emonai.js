@@ -1,60 +1,89 @@
-const emonapi = async () => {
+const axios = require("axios");
+const baseApiUrl = async () => {
   const base = await axios.get(
-    `https://raw.githubusercontent.com/sharifvau/Emon-Server/main/emonapi.json`
+    `https://raw.githubusercontent.com/sharifvau/Emon-Server/main/emonapi.json`,
   );
   return base.data.api;
 };
-module.exports = {
-  config: {
-    name: "emonai",
-    version: "1.0",
-    credit: "Emon",
-    prefix: 'awto',
-    description: "gemeini",
-    cooldowns: 5,
-    permission: 0,
-    category: "gemini",
-    usages: "emonai"
-    },
-  },
-  run: async ({ api, args, event }) => {
-    const q = args.join(" ");
-    //---- Image Reply -----//
-    if (event.type === "message_reply") {
-      var t = event.messageReply.attachments[0].url;
-      try {
-        const response = await axios.get(
-          `${await emonapi()}/gemini?q=${encodeURIComponent(q)}`
-        );
-        const data2 = response.data.Emon;
-        api.sendMessage(data2, event.threadID, event.messageID);
-      } catch (error) {
-        console.error("Error:", error.message);
-        api.sendMessage(error, event.threadID, event.messageID);
-      }
-    }
-    //---------- Message Reply ---------//
-    else if (!q) {
-      return api.sendMessage(
-        "Please provide a q or message reply",
-        event.threadID,
-        event.messageID
+
+module.exports.config = {
+  name: "emonai",
+  version: "1.0.0",
+  premssion: 0,
+  credits: "dipto",
+  description: "gemini ai with multiple conversation",
+  prefix: 'awto',
+  usages: "[message]",
+  category: "Ai",
+  coolddowns: 5,
+};
+module.exports.handleReply = async function ({ api, event, handleReply }) {
+  //api.unsendMessage(handleReply.messageID);
+  const { author } = handleReply;
+  if (author != event.senderID) return;
+  const uid = event.senderID;
+  if (event.type == "message_reply") {
+    const reply = event.body.toLowerCase();
+    if (isNaN(reply)) {
+      const response = await axios.get(
+        `${await baseApiUrl()}/gemini?q=${encodeURIComponent(reply)}&senderID=${uid}`,
       );
-    } else {
-      try {
-        const response = await axios.get(
-          `${await emonapi()}/gemini?q=${encodeURIComponent(q)}`
-        );
-        const message = response.data.Emon;
-        api.sendMessage(message, event.threadID, event.messageID);
-      } catch (error) {
-        console.error("Error calling Gemini AI:", error);
-        api.sendMessage(
-          `Sorry, there was an error processing your request.${error}`,
-          event.threadID,
-          event.messageID
-        );
-      }
+      const ok = response.data.response;
+      await api.sendMessage(
+        ok,
+        event.threadID,
+        (error, info) => {
+          global.client.handleReply.push({
+            commandName: this.config.name,
+            type: "reply",
+            messageID: info.messageID,
+            author: event.senderID,
+            link: ok,
+          });
+        },
+        event.messageID,
+      );
     }
-  },
+  }
+};
+module.exports.run = async function ({ api, args, event }) {
+  const uid = event.senderID;
+  try {
+    const dipto = args.join(" ").toLowerCase();
+    if (!args[0]) {
+      api.sendMessage(
+        "Please provide a question to answer\n\nExample:\ngemini hey",
+        event.threadID,
+        event.messageID,
+      );
+      return;
+    }
+    if (dipto) {
+      const response = await axios.get(
+        `${await baseApiUrl()}/gemini?q=${encodeURIComponent(dipto)}&senderID=${uid}`,
+      );
+      const mg = response.data.response;
+      await api.sendMessage(
+        { body: mg },
+        event.threadID,
+        (error, info) => {
+          global.client.handleReply.push({
+            commandName: this.config.name,
+            type: "reply",
+            messageID: info.messageID,
+            author: event.senderID,
+            link: mg,
+          });
+        },
+        event.messageID,
+      );
+    }
+  } catch (error) {
+    console.error(`Failed to get an answer: ${error.message}`);
+    api.sendMessage(
+      `${error.message}.\nAn error`,
+      event.threadID,
+      event.messageID,
+    );
+  }
 };
