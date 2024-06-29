@@ -22,18 +22,20 @@ module.exports.run = async function({ api, event, args, Users }) {
             return api.sendMessage(`${name},\n\n${rand}\n\n`, event.threadID, event.messageID);
         }
         
-        const res = await axios.get(`https://gemini-api-production-5fa9.up.railway.app/gemini?q=${encodeURIComponent(query)}`);
+        const encodedQuery = encodeURIComponent(query);
+        const apiUrl = `https://gemini-api-production-5fa9.up.railway.app/gemini?q=${encodedQuery}`;
+        
+        const res = await axios.get(apiUrl);
         
         if (res.data && res.data.generated_text) {
             return api.sendMessage({
                 body: res.data.generated_text
             }, event.threadID, event.messageID);
         } else {
-            return api.sendMessage('Failed to get a response', event.threadID, event.messageID);
+            return api.sendMessage('Failed to get a valid response', event.threadID, event.messageID);
         }
     } catch (error) {
-        console.error(error);
+        console.error('Error fetching data:', error.message);
         return api.sendMessage('An error occurred while fetching the response', event.threadID, event.messageID);
     }
 };
-          
