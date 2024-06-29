@@ -20,7 +20,7 @@ module.exports.run = async function({ api, event, args }) {
      try {
             api.setMessageReaction("🔍", event.messageID, (err) => {}, true);
             api.sendMessage("🕟 | processing....", threadID, messageID);
-        const res = await axios.get(`https://gemini-api-l3g4.onrender.com/gemini?q=${query}`);
+        const res = await axios.get(`https://gemini-api-l3g4.onrender.com/gemini?q=${prompt}`);
         const respond = res.data.response;
         if (res.data.error) {
             api.sendMessage(`Error: ${res.data.error}`, tid, (error, info) => {
