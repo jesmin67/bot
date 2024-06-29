@@ -14,8 +14,7 @@ module.exports = {
     cooldowns: 5,
     permission: 0,
     category: "gemini",
-    usages: {
-      en: "{pn} message | photo reply",
+    usages: "emonai"
     },
   },
   run: async ({ api, args, event }) => {
@@ -25,7 +24,7 @@ module.exports = {
       var t = event.messageReply.attachments[0].url;
       try {
         const response = await axios.get(
-          `${await emonapi()}/gemini?q=${encodeURIComponent(q)}&url=${encodeURIComponent(t)}`
+          `${await emonapi()}/gemini?q=${encodeURIComponent(q)}`
         );
         const data2 = response.data.Emon;
         api.sendMessage(data2, event.threadID, event.messageID);
