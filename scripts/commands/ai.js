@@ -2,9 +2,9 @@ module.exports.config = {
     name: "ai",
     version: "1.1.0",
     permssion: 0,
-    credits: "kenlie",
+    credits: "Emon",
     description: "ask anything",
-    prefix: false,
+    prefix: 'awto',
     category: "ai",
     usages: "[ask]",
     cooldowns: 5,
@@ -20,8 +20,8 @@ module.exports.run = async function({ api, event, args }) {
      try {
             api.setMessageReaction("🔍", event.messageID, (err) => {}, true);
             api.sendMessage("🕟 | processing....", threadID, messageID);
-        const res = await axios.get(`https://api.kenliejugarap.com/gptgo/?text=${content}`);
-        const respond = res.data.response;
+        const res = await axios.get(`https://gemini-api-l3g4.onrender.com/gemini?q=${content}`);
+        const respond = res.data.generated_text;
         if (res.data.error) {
             api.sendMessage(`Error: ${res.data.error}`, tid, (error, info) => {
                 if (error) {
