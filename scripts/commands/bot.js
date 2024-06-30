@@ -28,7 +28,7 @@ module.exports.run = async function({ api, event, args, Users }) {
         const res = await axios.get(apiUrl);
         
         if (res.data && res.data.generated_text) {
-            return api.sendMessage({${name},\n\n
+            return api.sendMessage(${name},\n\n
                 body: res.data.generated_text
             }, event.threadID, event.messageID);
         } else {
