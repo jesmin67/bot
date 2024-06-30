@@ -28,9 +28,7 @@ module.exports.run = async function({ api, event, args, Users }) {
         const res = await axios.get(apiUrl);
         
         if (res.data && res.data.generated_text) {
-            return api.sendMessage(${name},\n\n
-                body: res.data.generated_text
-            }, event.threadID, event.messageID);
+            return api.sendMessage(`${name},\n\n${res.data.generated_text}`, event.threadID, event.messageID);
         } else {
             return api.sendMessage('Failed to get a valid response', event.threadID, event.messageID);
         }
