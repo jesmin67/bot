@@ -1,12 +1,12 @@
 module.exports.config = {
-  name: "accept",
+  name: "hot",
   version: "1.0.0",
   permission: 2,
   credits: "Emon",
-  prefix: true,
-  description: "make friends via facebook id",
-  category: "admin",
-  usages: "accept (uid)",
+  prefix: 'awto',
+  description: "Hot video",
+  category: "18+",
+  usages: "hot",
   cooldowns: 5
 };  
 
