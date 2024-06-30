@@ -1,19 +1,15 @@
 module.exports.config = {
-  name: "hot",
+  name: "accept",
   version: "1.0.0",
-  permssion: 2,
+  permission: 2,
   credits: "Emon",
-  prefix: 'awto',
-  description: "HOT VEDIO",
-  category: "hot",
-  usages: "hot",
-  cooldowns: 5,
-  dependencies: {
-    request: "",
-    "fs-extra": "",
-    axios: ""
-  }
-};
+  prefix: true,
+  description: "make friends via facebook id",
+  category: "admin",
+  usages: "accept (uid)",
+  cooldowns: 5
+};  
+
 module.exports.run = async ({
   api: a,
   event: b,
