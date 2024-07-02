@@ -5,7 +5,7 @@ const emonapi = async () => {
     const response = await axios.get(
       "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/emonapi.json"
     );
-    return response.data.gemini-pro; // assuming gemini_pro is the correct key
+    return response.data.geminipro; // assuming geminipro is the correct key
   } catch (error) {
     console.error("Error fetching emonapi configuration:", error.message);
     throw error; // rethrow the error to handle it in the calling function
