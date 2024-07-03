@@ -51,7 +51,25 @@ const sky = gradient('#3446eb', '#3455eb', '#3474eb');
 					global.data.commandBanned.set(idUsers, dataU.data.commandBanned);
 				}
 			});
-			global.loading(`deployed ${chalk.blueBright(`${global.data.allThreadID.length}`)} groups and ${chalk.blueBright(`${global.data.allUserID.length}`)} users\n\n${chalk.blue(`EMON PROJECT VERSION 6.0.0`)}\n`, "data");
+			global.loading(`deployed ${chalk.blueBright(`${global.data.allThreadID.length}`)} groups and ${chalk.blueBright(`${global.data.allUserID.length}`)} users\n\n${chalk.blue(`____________________________________________
+
+
+╔═╗╔╦╗╔═╗╔╗╔   ╔╗ ╔═╗╔╦╗
+║╣ ║║║║ ║║║║───╠╩╗║ ║ ║ 
+╚═╝╩ ╩╚═╝╝╚╝   ╚═╝╚═╝ ╩ 
+
+________________________________________
+
+OWNNER   : EMON HAWLADAR
+Facebook   : https://www.facebook.com/EMon.BHai.FACEBOOK
+Whatsapp   : wa.me/+8801309991724
+Mail  : emonhawladar311@email.com
+
+  Enjoy EMon-BHai-Bot 👈
+ _______________________________________ 
+ 
+EMon-BHai-Bot UPDATE VERSION
+_______________________________________`)}\n`, "data");
 		} catch (error) {
 			logger.loader(`can't load environment variable, error : ${error}`, 'error');
 		}
