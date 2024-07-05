@@ -11,40 +11,41 @@ module.exports.config = {
     usages: "sms <phone_number> <message>",
     cooldowns: 5,
     dependencies: {
-        "axios": "^0.21.1" 
+        "axios": "^0.21.1"
     }
 };
 
 module.exports.run = async function({ api, event, args }) {
-    const { threadID } = event;
+    const { senderID, threadID } = event;
     const phoneNumber = args[0];
     const message = args.slice(1).join(" ");
 
     if (!phoneNumber || !message) {
-        api.sendMessage("Please provide both phone number and message in the format: sms <phone_number> <message>", threadID);
+        api.sendMessage("Please provide both phone number and message in the format: sms <phone_number> <message>", threadID, senderID);
         return;
     }
 
     try {
-        const response = await axios.get(`http://bulksmsbd.net/api/smsapi`, {
+        const response = await axios.get('http://api.smsinbd.com/sms-api/sendsms', {
             params: {
-                api_key: 'C4x8VSc1xDxYrlFLlO1j', 
-                type: 'text',
-                number: phoneNumber,
-                senderid: '8809617617727',
-                message: message
+                api_token: 'F1rwO3fY6hAFVKvjXF6T3dH6qRTpfxgKrylcJc56',
+                senderid: '8809612442476',
+                message: message,
+                contact_number: phoneNumber
             }
         });
 
-        const { success_message, error_message } = response.data;
-        
-        if (success_message) {
-            api.sendMessage(success_message, threadID);
+        const { status, message: responseMessage } = response.data;
+
+        const maskedPhoneNumber = `${phoneNumber.slice(0, 5)}***${phoneNumber.slice(-2)}`;
+
+        if (status === 'success') {
+            api.sendMessage(`Success: ${responseMessage}. Sent to ${maskedPhoneNumber}`, threadID, senderID);
         } else {
-            api.sendMessage(`Error: ${error_message}`, threadID);
+            api.sendMessage(`Error: ${responseMessage}. Tried to send to ${maskedPhoneNumber}`, threadID, senderID);
         }
     } catch (error) {
         console.error(error);
-        api.sendMessage(`An error occurred: ${error.message}`, threadID);
+        api.sendMessage(`An error occurred: ${error.message}`, threadID, senderID);
     }
 };
