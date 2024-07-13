@@ -9,12 +9,12 @@ module.exports = {
   config: {
     name: "emon",
     version: "1.0",
-    credit: "Dipto",
+    credit: "Emon",
     prefix: 'awto',
     description: "gemini ai",
     cooldowns: 5,
     permission: 0,
-    category: "google",
+    category: "Google",
     usages: {
       en: "{pn} message | photo reply",
     },
@@ -46,7 +46,7 @@ module.exports = {
         const response = await axios.get(
           `${apiUrl}/mgs?q=${encodeURIComponent(prompt)}`
         );
-        const message = response.data.response;
+        const message = response.data.generated_text;
         api.sendMessage(`GEMINI RESPONSE: ${message}`, event.threadID, event.messageID);
       } catch (error) {
         console.error("Error calling Gemini AI:", error.message);
