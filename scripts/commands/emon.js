@@ -1,66 +1,53 @@
 const axios = require("axios");
 
-const emonapi = async () => {
-  try {
-    const response = await axios.get(
-      "https://raw.githubusercontent.com/sharifvau/Emon-Server/main/emonapi.json"
-    );
-    return response.data.geminipro; // assuming geminipro is the correct key
-  } catch (error) {
-    console.error("Error fetching emonapi configuration:", error.message);
-    throw error; // rethrow the error to handle it in the calling function
-  }
+const getApiUrl = async () => {
+  const response = await axios.get('https://raw.githubusercontent.com/sharifvau/Emon-Server/main/emonapi.json');
+  return response.data.geminipro;
 };
 
 module.exports = {
   config: {
     name: "emon",
     version: "1.0",
-    credit: "Emon",
-    prefix: "awto",
-    description: "gemeini",
+    credit: "Dipto",
+    prefix: 'awto',
+    description: "gemini ai",
     cooldowns: 5,
     permission: 0,
-    category: "gemini",
+    category: "google",
     usages: {
       en: "{pn} message | photo reply",
     },
   },
   run: async ({ api, args, event }) => {
-    const q = args.join(" ");
+    const prompt = args.join(" ");
+    const apiUrl = await getApiUrl();
 
-    // Handling image replies
-    if (event.type === "message_reply") {
+    if (event.type === "message_reply" && event.messageReply.attachments.length > 0) {
+      const attachmentUrl = event.messageReply.attachments[0].url;
       try {
-        const t = event.messageReply.attachments[0].url;
-        const apiUrl = await emonapi();
         const response = await axios.get(
-          `${apiUrl}/gemini?q=${encodeURIComponent(q)}&url=${encodeURIComponent(t)}`
+          `${apiUrl}/gemini?q=${encodeURIComponent(attachmentUrl)}&text=${encodeURIComponent(prompt)}`
         );
-        const data2 = response.data.response;
-        api.sendMessage(data2, event.threadID, event.messageID);
+        const message = response.data.response;
+        api.sendMessage(`GEMINI RESPONSE: ${message}`, event.threadID, event.messageID);
       } catch (error) {
-        console.error("Error processing image reply:", error.message);
+        console.error("Error:", error.message);
         api.sendMessage(`Error: ${error.message}`, event.threadID, event.messageID);
       }
+    } else if (!prompt) {
+      api.sendMessage(
+        "Please provide a prompt or message reply",
+        event.threadID, 
+        event.messageID
+      );
     } else {
-      // Handling regular text replies
-      if (!q) {
-        api.sendMessage(
-          "Please provide a query or reply to a message with an image.",
-          event.threadID,
-          event.messageID
-        );
-        return;
-      }
-
       try {
-        const apiUrl = await emonapi();
-        const respons = await axios.get(
-          `${apiUrl}/gemini?q=${encodeURIComponent(q)}`
+        const response = await axios.get(
+          `${apiUrl}/mgs?q=${encodeURIComponent(prompt)}`
         );
-        const message = respons.data.generated_text;
-        api.sendMessage(message, event.threadID, event.messageID);
+        const message = response.data.response;
+        api.sendMessage(`GEMINI RESPONSE: ${message}`, event.threadID, event.messageID);
       } catch (error) {
         console.error("Error calling Gemini AI:", error.message);
         api.sendMessage(
