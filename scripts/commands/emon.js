@@ -30,7 +30,7 @@ module.exports = {
           `${apiUrl}/gemini?q=${encodeURIComponent(attachmentUrl)}&text=${encodeURIComponent(prompt)}`
         );
         const message = response.data.response;
-        api.sendMessage(`GEMINI RESPONSE: ${message}`, event.threadID, event.messageID);
+        api.sendMessage(`${message}`, event.threadID, event.messageID);
       } catch (error) {
         console.error("Error:", error.message);
         api.sendMessage(`Error: ${error.message}`, event.threadID, event.messageID);
@@ -47,7 +47,7 @@ module.exports = {
           `${apiUrl}/mgs?q=${encodeURIComponent(prompt)}`
         );
         const message = response.data.generated_text;
-        api.sendMessage(`GEMINI RESPONSE: ${message}`, event.threadID, event.messageID);
+        api.sendMessage(`${message}`, event.threadID, event.messageID);
       } catch (error) {
         console.error("Error calling Gemini AI:", error.message);
         api.sendMessage(
