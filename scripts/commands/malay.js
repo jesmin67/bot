@@ -28,7 +28,7 @@ module.exports.run = async ({ api, event, args }) => {
 		translateThis = content.slice(0, content.length)
 		lang = global.config.language;
 	}
-	return request(encodeURI(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=my&dt=t&q=${translateThis}`), (err, response, body) => {
+	return request(encodeURI(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=MY&dt=t&q=${translateThis}`), (err, response, body) => {
 		if (err) return api.sendMessage("An error has occurred!", event.threadID, event.messageID);
 		var retrieve = JSON.parse(body);
 		var text = '';
