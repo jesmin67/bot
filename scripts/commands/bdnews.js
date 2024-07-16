@@ -42,7 +42,7 @@ module.exports = {
 
 
   
-  start: async function ({ nayan, events, args }) {
+  start: async function ({ api, events, args }) {
     try {
       const { bdnews } = require('nayan-server');
       const response = await bdnews();
@@ -60,7 +60,7 @@ module.exports = {
       let body = `»🔎 There are ${head.length} results news:\n\n${msg}» Reply 'feedback' and select one of the searches above.`;
 
     
-      nayan.reply({ body: body }, events.threadID, (error, info) => {
+      api.reply({ body: body }, events.threadID, (error, info) => {
         if (error) {
           console.error('Error replying to user:', error);
           return api.reply('An error occurred while processing your request. Please try again later.', events.threadID, events.messageID);
