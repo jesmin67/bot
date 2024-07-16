@@ -1,6 +1,3 @@
-// dont change credit 
-// enjoy bdnews file
-
 module.exports = {
   config: {
     name: "bdnews",
@@ -66,7 +63,7 @@ module.exports = {
       nayan.reply({ body: body }, events.threadID, (error, info) => {
         if (error) {
           console.error('Error replying to user:', error);
-          return nayan.reply('An error occurred while processing your request. Please try again later.', events.threadID, events.messageID);
+          return api.reply('An error occurred while processing your request. Please try again later.', events.threadID, events.messageID);
         }
 
         
@@ -81,7 +78,7 @@ module.exports = {
 
     } catch (error) {
       console.error('Error fetching or sending news:', error);
-      nayan.reply('An error has occurred, please try again later.', events.threadID, events.messageID);
+      api.reply('An error has occurred, please try again later.', events.threadID, events.messageID);
     }
   }
 };
