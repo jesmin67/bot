@@ -4,81 +4,68 @@ module.exports = {
     version: "1.0.0",
     permission: 0,
     credits: "nayan",
-    description: "...",
+    description: "Fetches the latest news.",
     prefix: 'awto',
     category: "user",
     usages: "",
     cooldowns: 5,
   },
 
-
   handleReply: async function ({ api, event, handleReply }) {
-      const axios = require('axios');
-      const { createReadStream, unlinkSync, statSync } = require("fs-extra");
+    const { bdnews } = require('nayan-server');
 
-      try {
-          const { bdnews } = require('nayan-server');
-          const response = await bdnews();
-          const data = response.news;
-
-          
-          const con = data.filter(item => item.heading === handleReply.head[event.body - 1]);
-          if (con.length > 0) {
-              const replyMessage = `
-              Title: ${con[0].heading}
-              Time: ${con[0].timestamp}
-              Content: ${con[0].content || "Not Found"}
-              `;
-              api.unsendMessage(handleReply.messageID);
-              return api.sendMessage(replyMessage, event.threadID);
-          } else {
-              return api.sendMessage('News not found.', event.threadID);
-          }
-      } catch (e) {
-          console.error('Error handling reply:', e);
-          return api.sendMessage('An error occurred while processing your request. Please try again later.', event.threadID);
-      }
-  },
-
-
-  
-  start: async function ({ api, events, args }) {
     try {
-      const { bdnews } = require('nayan-server');
       const response = await bdnews();
       const data = response.news;
-      console.log(response)
 
-      let head = [];
-      let msg = "";
+      const selectedNews = data.find(item => item.heading === handleReply.head[event.body - 1]);
+      
+      if (selectedNews) {
+        const replyMessage = `
+          Title: ${selectedNews.heading}
+          Time: ${selectedNews.timestamp}
+          Content: ${selectedNews.content || "Not Found"}
+        `;
+        api.unsendMessage(handleReply.messageID);
+        return api.sendMessage(replyMessage, event.threadID);
+      } else {
+        return api.sendMessage('News not found.', event.threadID);
+      }
+    } catch (error) {
+      console.error('Error handling reply:', error);
+      return api.sendMessage('An error occurred while processing your request. Please try again later.', event.threadID);
+    }
+  },
 
-      for (let i = 0; i < data.length; i++) {
-        head.push(data[i].heading);
-        msg += `${i + 1} - ${data[i].heading}\n\n`;
+  start: async function ({ api, events, args }) {
+    const { bdnews } = require('nayan-server');
+
+    try {
+      const response = await bdnews();
+      const data = response.news;
+
+      if (!data.length) {
+        return api.sendMessage('No news available at the moment.', events.threadID);
       }
 
-      let body = `»🔎 There are ${head.length} results news:\n\n${msg}» Reply 'feedback' and select one of the searches above.`;
+      const head = data.map(item => item.heading);
+      const msg = data.map((item, index) => `${index + 1} - ${item.heading}`).join('\n\n');
 
-    
-      api.reply({ body: body }, events.threadID, (error, info) => {
-        if (error) {
-          console.error('Error replying to user:', error);
-          return api.reply('An error occurred while processing your request. Please try again later.', events.threadID, events.messageID);
-        }
+      const body = `»🔎 There are ${head.length} results:\n\n${msg}\n\n» Reply with the number of the news item you want to see.`;
 
-        
-        global.client.handleReply.push({
-          type: 'reply',
-          name: this.config.name,
-          messageID: info.messageID,
-          author: events.senderID,
-          head: head
-        });
-      }, events.messageID);
+      const info = await api.sendMessage(body, events.threadID);
+
+      global.client.handleReply.push({
+        type: 'reply',
+        name: this.config.name,
+        messageID: info.messageID,
+        author: events.senderID,
+        head: head
+      });
 
     } catch (error) {
       console.error('Error fetching or sending news:', error);
-      api.reply('An error has occurred, please try again later.', events.threadID, events.messageID);
+      api.sendMessage('An error has occurred, please try again later.', events.threadID, events.messageID);
     }
   }
 };
