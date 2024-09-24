@@ -1,7 +1,7 @@
 {
   "login": {
-    "email": "email",
-    "password": "password"
+    "email": "jesmin679@bangban.uk",
+    "password": "emonemon"
   },
   "loginoptions": {
     "selfListen": false,
@@ -21,7 +21,7 @@
   "allowInbox": false,
   "adminOnly": false,
   "autoCreateDB": true,
-  "encryptSt": true,
+  "encryptSt": false,
   "version": "6.0.1",
   "logs": {
     "enable": true
